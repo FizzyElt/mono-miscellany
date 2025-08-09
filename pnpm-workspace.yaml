@@ -1,0 +1,7 @@
+packages:
+  - projects/*
+
+onlyBuiltDependencies:
+  - esbuild
+
+haredWorkspaceLockfile: false

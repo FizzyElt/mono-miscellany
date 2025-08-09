@@ -1,0 +1,24 @@
+{
+  "name": "mono-miscellany",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "FizzyElt",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "effect": "^3.17.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.4",
+    "@slidev/cli": "^52.1.0",
+    "@slidev/theme-seriph": "^0.25.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.1"
+  }
+}

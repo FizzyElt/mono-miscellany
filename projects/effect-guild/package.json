@@ -1,0 +1,13 @@
+{
+  "name": "effect-guild",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "slidev ./slides.md",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "FizzyElt",
+  "license": "ISC"
+}
