@@ -11,14 +11,14 @@
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
-    "effect": "^3.17.7"
+    "effect": "^3.18.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "@slidev/cli": "^52.1.0",
+    "@biomejs/biome": "^2.2.5",
+    "@slidev/cli": "^52.2.4",
     "@slidev/theme-seriph": "^0.25.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.1"
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
   }
 }
