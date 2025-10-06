@@ -37,9 +37,37 @@ layout: cover
 Monolith -> Modular Monolith -> Monorepo
 
 ---
+layout: image-right
+image: /assets/monolith.png
+backgroundSize: contain
+---
 
-# Monolith
+# Monolith (單體式)
 
+- 與後端共存
+- 通常由後端模版語法生成
+- 前端多為附屬品（為後端提供介面操作）
+- 與使用者互動性較低
 
+---
+layout: image-right
+image: /assets/modular-monolith.png
+backgroundSize: contain
+---
+
+# Modular Monolith (模組化單體式)
+
+- 前端與後端分離
+- 整體專案在被細化成多個模組（重複的功能行為及元件）
+- 關注點著重於更複雜的互動、系統化的組織樣式、狀態管理及變化
+- 多以 SPA 方式運作
+
+---
+layout: image-right
+image: /assets/modular-monolith.png
+backgroundSize: contain
+---
+
+# Monorepo
 
 ---
