@@ -25,8 +25,8 @@ layout: center
 
 # 研究目標
 
-- 平滑遷移現有專案至新框架可能辦法
 - 理解 Micro Front-End 基本構想，同時了解其優缺點
+- 平滑遷移現有專案至新框架，Micro Front-End 是否是解方？
 
 ---
 layout: cover
@@ -206,3 +206,387 @@ layout: center
 | 部署複雜度 |          低           |         高          |
 | 載入速度   |          高           |         低          |
 | 即時更新   |         不行          |        可以         |
+
+---
+layout: center
+---
+
+# Module-federation & Single-spa
+
+---
+
+# Module Federation
+
+***
+
+主要解決 Micro Front-End 解偶應用的同時，多個應用需共享相同套件的問題，與 Micro Front-End 無直接關聯，且並非所有 bundle tool 都支援。
+
+> Module Federation 是一種 JavaScript 應用分治的架構模式（類似於服務端的微服務），它允許你在多個 JavaScript 應用程式（或微前端）之間共享程式和資源。
+
+[What is Module Federation ?](https://module-federation.io/guide/start/index.html#-what-is-module-federation)
+
+```mermaid
+flowchart LR
+    shared[Shared Modules]
+    app[Applications]
+
+    host[Host App]
+
+    browser[Browser]
+
+    shared -.-> host
+    shared -.-> app
+    app -.-> host
+
+    host <----> browser
+```
+
+---
+
+# Single-spa
+
+***
+
+[single-spa](https://single-spa.js.org/docs/getting-started-overview) 是一種頂層路由。當路由處於活動狀態時，它將下載並執行該路由的相關程式。
+
+路由的程式被稱為應用，每個程式都可以（可選）擁有自己的 git repo、CI，並且可以獨立部署。這些應用即可以用相同框架實現，也可以用不同框架實現。
+
+某種程度上是 Runtime Integration 中 Host App 的角色。
+
+```mermaid
+flowchart LR
+    app1[Application1]
+    app2[Application2]
+    app3[Application3]
+
+    host["Top Level Router(Host App)"]
+
+    browser[Browser]
+
+    app1 & app2 & app3 -.-> host
+    host <--> browser
+```
+
+---
+layout: center
+---
+
+# Module Federation 演示
+
+- vite
+- [module-federation/vite](https://github.com/module-federation/vite)
+
+---
+layout: center
+---
+
+# Micro Front-End 真的是我們要的嗎？
+回顧一開始的目的
+
+---
+layout: center
+---
+
+# 平滑遷移現有專案至新框架
+
+Micro Front-End 不完全是解法的原因
+
+- 只是一種概念，多框架融合並非本身目的
+- 配套工具所展示的多框架 demo 過於單純，無法反映真實情境
+- 幾乎都要做到高度解偶，多框架才能成立
+- 變相增加開發及部署複雜度
+
+---
+layout: cover
+---
+
+# 單一專案多框架融合
+以 React、Svelte、Solid 為例
+
+---
+layout: center
+---
+# 思考 bundle tool 實際為我們做了什麼
+
+- 處理各種檔案格式
+- 轉譯及壓縮
+- 模組分割
+- ...
+
+---
+
+# 能處理各種檔案格式
+
+根據這個特性，我們可以讓 vite 處理各框架的模版語法，在某框架下直接引用其他框架的元件
+
+vite 官方提供的初始模版
+```shell
+pnpm create vite --template vue-ts
+pnpm create vite --template svelte-ts
+pnpm create vite --template react-ts
+pnpm create vite --template solid-ts
+```
+
+```mermaid
+flowchart LR
+    subgraph pack[packages]
+        direction LR
+        S[Svelte Components]
+        D[Solid Components]
+    end
+
+    App["Host App(React)"]
+
+    S & D ----> App
+
+    App -->|build| Dist
+```
+
+---
+layout: center
+---
+
+# 融合要達成的三件事
+
+- 建立轉換層，讓宿主框架能夠引用
+- 能夠共享並操作全域狀態
+- 宿主框架元件 Props 的改變也要能作用在其他框架元件身上
+
+---
+layout: image
+image: /assets/react-svelte.png
+backgroundSize: 500px
+---
+
+---
+
+# 前置作業
+
+````md magic-move
+```ts 
+// vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    svelte(),
+    tsconfigPaths({ root: "./" }),
+  ],
+});
+```
+```json
+// tsconfig.svelte.json
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    
+    "allowJs": true,
+    "checkJs": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "composite": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/svelte-components/**/*.svelte.ts",
+    "src/svelte-components/**/*.svelte.js",
+    "src/svelte-components/**/*.svelte"
+  ]
+}
+```
+````
+---
+
+# 建立轉換層
+
+```tsx
+import { memo, useLayoutEffect, useRef } from "react";
+import { type Component, mount } from "svelte";
+
+export const createSvelteComponent = <Props extends Record<string, any>>(
+  component: Component<Props>,
+) => {
+  function SvComponent(props: Props) {
+    const ref = useRef<HTMLDivElement>(null);
+    useLayoutEffect(() => {
+      while (ref.current?.firstChild) {
+        ref.current.firstChild.remove();
+      }
+
+      if (ref.current) {
+        mount(component, { target: ref.current, props });
+      }
+    }, []);
+
+    return <div ref={ref}></div>;
+  }
+  SvComponent.displayName = component.name;
+  return memo(SvComponent);
+};
+```
+
+---
+
+# 共享並操作全域狀態
+
+```ts
+// svelte store base
+export const createShareValue = <T>(value: T) => {
+  const writableValue = writable(value);
+  const sub = (callback: Subscriber<T>) => {
+    const unsub = writableValue.subscribe(callback);
+
+    return unsub;
+  };
+
+  const getter = () => get(writableValue);
+
+  const useStore = () => {
+    const value = useSyncExternalStore(sub, getter);
+
+    const set = useCallback((v: SetStateAction<T>) => {
+      if (typeof v === "function") {
+        return writableValue.update(v as Updater<T>);
+      }
+
+      return writableValue.set(v);
+    }, []);
+
+    return [value, set] as const;
+  };
+
+  return [writableValue, useStore] as const;
+};
+```
+
+---
+
+#### 宿主框架元件 Props 的改變也要能作用在其他框架元件身上
+
+```tsx {16,18}
+import { memo, useLayoutEffect, useRef } from "react";
+import { type Component, mount } from "svelte";
+
+export const createSvelteComponent = <Props extends Record<string, any>>(
+  component: Component<Props>,
+) => {
+  function SvComponent(props: Props) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      while (ref.current?.firstChild) {
+        ref.current.firstChild.remove();
+      }
+
+      if (ref.current) {
+        mount(component, { target: ref.current, props });
+      }
+    }, Object.values(props));
+
+    return <div ref={ref}></div>;
+  }
+
+  SvComponent.displayName = component.name;
+
+  return memo(SvComponent);
+};
+```
+
+---
+
+#### 更優解
+
+```tsx {*}{maxHeight:'90%'}
+import { memo, useLayoutEffect, useRef } from "react";
+import { type Component, mount } from "svelte";
+import { readonly, type Writable, writable } from "svelte/store";
+import type { ReactSvProps } from "./type";
+
+export const createSvelteComponent = <Props extends Record<string, any>>(
+  component: Component<ReactSvProps<Props>>,
+) => {
+  function SvComponent(props: Props) {
+    const ref = useRef<HTMLDivElement>(null);
+    const propsRef = useRef<Writable<Props> | null>(null);
+
+    if (!propsRef.current) {
+      propsRef.current = writable(props);
+    }
+
+    useLayoutEffect(() => {
+      while (ref.current?.firstChild) {
+        ref.current.firstChild.remove();
+      }
+      if (ref.current && propsRef.current) {
+        mount(component, {
+          target: ref.current,
+          props: {
+            props: readonly(propsRef.current),
+          },
+        });
+      }
+    }, []);
+
+    useLayoutEffect(() => {
+      propsRef.current?.set(props);
+    }, [props]);
+
+    return <div ref={ref}></div>;
+  }
+  SvComponent.displayName = component.name;
+  return memo(SvComponent);
+};
+```
+
+---
+layout: center
+---
+
+# Svelte 元件引用 Props
+
+```svelte
+<script lang="ts">
+  import { type Readable } from "svelte/store";
+  const { props: readonlyProps }: ReactSvProps<{ count: number }>  = $props();
+ 
+  // 解構並監聽變化
+  const { count } = $derive($readonlyProps);
+
+</script>
+```
+---
+layout: center
+---
+
+# 額外考量
+我們已經把最困難的部分解決了，讓 React 在串接上幾乎感受不到任何變化，再來考量的是樣式問題，要麼重寫一組不然就是原本已經使用跨框架的樣式解決方案，
+
+- tailwindcss
+- shadcn
+- pandacss
+- ...
+
+---
+layout: image
+image: /assets/react-svelte-meme.png
+backgroundSize: 50%
+---
+
+---
+layout: cover
+---
+
+## 把 Solid 也縫上去 
+
+<p align="center">
+  <img src="/assets/react-solid.png">
+</p>
+---
