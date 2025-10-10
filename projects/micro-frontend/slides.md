@@ -306,6 +306,7 @@ layout: cover
 ---
 layout: center
 ---
+
 # 思考 bundle tool 實際為我們做了什麼
 
 - 處理各種檔案格式
@@ -403,6 +404,11 @@ export default defineConfig({
 }
 ```
 ````
+
+---
+layout: image-right
+image: /assets/react-svelte-render-tree.png
+backgroundSize: 80%
 ---
 
 # 建立轉換層
@@ -434,10 +440,24 @@ export const createSvelteComponent = <Props extends Record<string, any>>(
 ```
 
 ---
+layout: two-cols-header
+---
 
 # 共享並操作全域狀態
 
-```ts
+::left::
+
+找到框架裡除了自己的狀態如何同步外部狀態的方法
+
+Svelte 中 store 內有個 `writableValue` 方法能夠在 TS 內直接建立並且讓元件監聽變化
+
+在 React 這端也要能夠操控並監聽，這裡使用 `useSyncExternalStore` 來訂閱 `writableValue` 的變化
+
+這樣不管是 React 或 Svelte 都能夠操作同一個共享的狀態 
+
+::right::
+
+```ts {*}{maxHeight:'80%'}
 // svelte store base
 export const createShareValue = <T>(value: T) => {
   const writableValue = writable(value);
@@ -449,18 +469,18 @@ export const createShareValue = <T>(value: T) => {
 
   const getter = () => get(writableValue);
 
+  const setValue = (v: SetStateAction<T>) => {
+    if (typeof v === "function") {
+      return writableValue.update(v as Updater<T>);
+    }
+
+    return writableValue.set(v);
+  };
+
   const useStore = () => {
     const value = useSyncExternalStore(sub, getter);
 
-    const set = useCallback((v: SetStateAction<T>) => {
-      if (typeof v === "function") {
-        return writableValue.update(v as Updater<T>);
-      }
-
-      return writableValue.set(v);
-    }, []);
-
-    return [value, set] as const;
+    return [value, setValue] as const;
   };
 
   return [writableValue, useStore] as const;
@@ -562,17 +582,6 @@ layout: center
 
 </script>
 ```
----
-layout: center
----
-
-# 額外考量
-我們已經把最困難的部分解決了，讓 React 在串接上幾乎感受不到任何變化，再來考量的是樣式問題，要麼重寫一組不然就是原本已經使用跨框架的樣式解決方案，
-
-- tailwindcss
-- shadcn
-- pandacss
-- ...
 
 ---
 layout: image
@@ -589,4 +598,192 @@ layout: cover
 <p align="center">
   <img src="/assets/react-solid.png">
 </p>
+
 ---
+
+# 前置作業
+
+Solid 與 React 都是使用 JSX 語法，但兩者所做的轉換及部分語法不相同，要避免兩者衝突這裡要透過特定副檔名隔離 Solid 元件並使用對應的轉換功能。
+
+```ts
+// vite.config.ts
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    react({ exclude: ["src/**/*.solid.tsx"] }),
+    solid({ include: ["src/**/*.solid.tsx"] }),
+    tsconfigPaths({ root: "./" }),
+  ],
+});
+```
+
+---
+
+# 建立轉換層
+
+```tsx
+export const createSolidComponent = <Props extends Record<string, any>>(
+  renderComponent: (target: MountableElement, props: Props) => void,
+) => {
+  function SolidComponent(props: Props) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      while (ref.current?.firstChild) {
+        ref.current.firstChild.remove();
+      }
+
+      if (ref.current) {
+        renderComponent(ref.current, props);
+      }
+    }, []);
+
+    return <div ref={ref}></div>;
+  }
+
+  return memo(SolidComponent);
+};
+```
+
+---
+layout: two-cols-header
+---
+
+# 共享並操作全域狀態
+
+::left::
+
+這裡與 Svelte 類似，Solid 也有自己的狀態管理方式，使用 `createSignal` 建立狀態並讓元件監聽變化
+
+`createSignal` 本身就不限於在 Solid 元件內使用，可被建立在任何地方，但為了要讓 React `useSyncExternalStore` 能夠訂閱變化，這裡需要透過 `observable` 方法將 `signalValue` 轉成 `Observable` 的 API
+
+擁有 `Observable` API 的物件剛好也可以被 Svelte 的 `$value` 語法監聽變化，因此 Svelte 也能共享這個狀態
+
+::right::
+
+```ts {*}{maxHeight:'60%'}
+// signal base
+export const createShareValueWithSignal = <T>(
+  value: T,
+): {
+  svelteWritableValue: Observable<T>;
+  useShareStore: () => readonly [T, Setter<T>];
+  signalValue: Accessor<T>;
+  setSignalValue: Setter<T>;
+} => {
+  const [signalValue, setSignalValue] = createSignal(value);
+
+  const observableSignalValue = observable(signalValue);
+
+  const sub = (callback: Subscriber<T>) => {
+    const unsub = observableSignalValue.subscribe(callback);
+
+    return unsub.unsubscribe;
+  };
+
+  const getter = () => signalValue();
+
+  const useStore = () => {
+    const value = useSyncExternalStore(sub, getter);
+
+    return [value, setSignalValue] as const;
+  };
+
+  return {
+    svelteWritableValue: observableSignalValue,
+    useShareStore: useStore,
+    signalValue,
+    setSignalValue,
+  };
+};
+```
+
+---
+
+### 宿主框架元件 Props 的改變也要能作用在其他框架元件身上
+
+```tsx {*}{maxHeight:'90%'}
+export const createSolidComponent = <Props extends Record<string, any>>(
+  renderComponent: (target: MountableElement, props: Accessor<Props>) => void,
+) => {
+  function SolidComponent(props: Props) {
+    const signalRef = useRef<Accessor<Props> | null>(null);
+    const setSignalRef = useRef<Setter<Props> | null>(null);
+    const ref = useRef<HTMLDivElement>(null);
+
+    if (!signalRef.current || !setSignalRef.current) {
+      const [propsSignal, setPropsSignal] = createSignal(props);
+      signalRef.current = propsSignal;
+      setSignalRef.current = setPropsSignal;
+    }
+
+    useLayoutEffect(() => {
+      while (ref.current?.firstChild) {
+        ref.current.firstChild.remove();
+      }
+
+      if (ref.current && signalRef.current) {
+        renderComponent(ref.current, signalRef.current);
+      }
+    }, []);
+
+    useLayoutEffect(() => {
+      if (setSignalRef.current) {
+        setSignalRef.current(() => props);
+      }
+    }, [props]);
+
+    return <div ref={ref}></div>;
+  }
+
+  return memo(SolidComponent);
+};
+```
+
+---
+layout: center
+---
+
+# Solid 元件建立
+
+```tsx
+/** @jsxImportSource solid-js */
+
+export interface Props {
+  // ...
+}
+
+const Comp = (wrappedProps: ReactSolidProps<Props>) => {
+
+  const props = () => wrappedProps.props;
+  // ...
+
+  return <div>...</div>;
+}
+
+export default (target: MountableElement, props: Accessor<Props>) =>
+  render(() => <Comp props={props()} />, target);
+```
+
+---
+layout: center
+---
+
+# 額外考量
+我們已經把最困難的部分解決了，讓 React 在串接上幾乎感受不到任何變化，再來考量的是樣式問題，要麼重寫一組不然就是原本已經使用跨框架的樣式解決方案，
+
+- tailwindcss
+- shadcn
+- pandacss
+- ...
+  
+---
+layout: center
+---
+
+# Thank You
