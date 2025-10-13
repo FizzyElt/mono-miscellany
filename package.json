@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "FizzyElt",
   "license": "ISC",
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.18.2",
   "dependencies": {
     "effect": "^3.18.2"
   },
