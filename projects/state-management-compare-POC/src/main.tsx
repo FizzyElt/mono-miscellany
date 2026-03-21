@@ -1,5 +1,6 @@
 import { Option, pipe } from "effect";
 import ReactDOM from "react-dom/client";
+
 import App from "./App.tsx";
 
 // ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -9,6 +10,6 @@ import App from "./App.tsx";
 // );
 
 pipe(
-  Option.fromNullable(document.getElementById("root")),
-  Option.map((root) => ReactDOM.createRoot(root).render(<App />)),
+    Option.fromNullable(document.getElementById("root")),
+    Option.map((root) => ReactDOM.createRoot(root).render(<App />)),
 );
