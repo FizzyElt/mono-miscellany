@@ -1,0 +1,16 @@
+{
+    "name": "ai-knowledge-breakthrough",
+    "version": "1.0.0",
+    "description": "",
+    "keywords": [],
+    "license": "ISC",
+    "author": "FizzyElt",
+    "type": "module",
+    "scripts": {
+        "dev": "slidev ./slides.md",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@slidev/theme-default": "^0.25.0"
+    }
+}
