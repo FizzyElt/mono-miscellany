@@ -1,25 +1,27 @@
 {
-  "name": "mono-miscellany",
-  "version": "1.0.0",
-  "description": "",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "FizzyElt",
-  "license": "ISC",
-  "packageManager": "pnpm@10.18.2",
-  "dependencies": {
-    "effect": "^3.21.0"
-  },
-  "devDependencies": {
-    "@slidev/cli": "^52.14.1",
-    "@slidev/theme-seriph": "^0.25.0",
-    "@vitejs/plugin-react": "^5.2.0",
-    "oxfmt": "^0.42.0",
-    "oxlint": "^1.57.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
-  }
+    "name": "mono-miscellany",
+    "version": "1.0.0",
+    "description": "",
+    "keywords": [],
+    "license": "ISC",
+    "author": "FizzyElt",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "slide:ai-knowledge-breakthrough": "pnpm --filter ai-knowledge-breakthrough run dev",
+        "slide:micro-frontend": "pnpm --filter micro-frontend run dev"
+    },
+    "dependencies": {
+        "effect": "^3.21.0"
+    },
+    "devDependencies": {
+        "@slidev/cli": "^52.14.1",
+        "@slidev/theme-seriph": "^0.25.0",
+        "@vitejs/plugin-react": "^5.2.0",
+        "oxfmt": "^0.42.0",
+        "oxlint": "^1.57.0",
+        "typescript": "^5.9.3",
+        "vite": "^7.3.1"
+    },
+    "packageManager": "pnpm@10.18.2"
 }
