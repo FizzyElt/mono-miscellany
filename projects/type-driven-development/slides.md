@@ -109,7 +109,7 @@ type Rgb = [number, number, number]
 
 <template #5>
 
-### 分支(union)
+### 分支(discriminated union)
 
 ```ts
 type Result<T, E> =
@@ -191,7 +191,7 @@ layout: intro
 <v-switch>
   <template #1> 格式約束 </template>
   <template #2> 結構、有限集合、泛型 </template>
-  <template #3> 分支(union) </template>
+  <template #3> 分支(discriminated union) </template>
   <template #4> 泛型約束 </template>
   <template #5> 函數多載 </template>
 </v-switch>
@@ -228,7 +228,7 @@ type Resp<T, E> =
   | {
       statusCode: 200;
       status: 'success';
-      content: T;
+      data: T;
     }
   | {
       statusCode: number;
@@ -246,7 +246,7 @@ type Resp<T, E> =
   | {
       statusCode: 200;
       status: 'success';
-      content: T;
+      data: T;
     }
   | {
       statusCode: number;
@@ -264,7 +264,7 @@ type Resp<T, E> =
   | {
       statusCode: 200;
       status: 'success';
-      content: T;
+      data: T;
     }
   | {
       statusCode: number;
@@ -278,3 +278,222 @@ interface Fetch {
 }
 ```
 ````
+
+---
+
+# 型別的設計會改變開發行為
+
+小小用心，大大改變
+
+<v-switch>
+  <template #0> 
+  
+  好的型別不是讓你少寫判斷，而是讓你不能跳過必要判斷。
+
+  ```ts
+  declare const request: Fetch;
+
+  const resp = await request<User, ApiError>('api/users')();
+
+  renderUser(resp.data);
+  //              ^^^^
+  // Property 'data' does not exist on type 'Resp<User, ApiError>'
+  ```
+
+  型別告訴你：這個資料還不能被當成成功結果使用。
+
+  </template>
+  <template #1> 
+  
+  當你先處理分支，TypeScript 才會把型別收斂到正確的狀態。
+
+  ```ts
+  declare const request: Fetch;
+
+  const resp = await request<User, ApiError>('api/users')();
+
+  if (resp.status === 'success') {
+    renderUser(resp.data);
+  } else {
+    showError(resp.error);
+  }
+  ```
+
+  在源頭能保證實作正確性的情況下，即便這個判斷稍微囉唆一點，但從使用安全性角度來看，能在維護與開發當下讓開發者意識到實際會發生的狀況，半強迫式的引導開發者主動選擇如何處置。
+  
+  </template>
+</v-switch>
+
+---
+
+# 避免不可能狀態
+
+型別設計的重點不只是描述資料長相，而是限制不合理的組合。
+
+<v-switch>
+  <template #0>
+
+  ```ts
+  type QueryState = {
+    loading: boolean;
+    data?: User;
+    error?: Error;
+  };
+  ```
+
+  這樣的型別看起來彈性很高，但也代表它允許很多不合理的狀態。
+
+  ```ts
+  const state: QueryState = {
+    loading: true,
+    data: user,
+    error: error,
+  };
+  ```
+
+  </template>
+  <template #1>
+
+  ```ts
+  type QueryState =
+    | { status: 'idle' }
+    | { status: 'loading' }
+    | { status: 'success'; data: User }
+    | { status: 'error'; error: Error };
+  ```
+
+  每個狀態只攜帶它真正會有的資訊。
+
+  ```ts
+  if (state.status === 'success') {
+    renderUser(state.data);
+  }
+  ```
+
+  </template>
+</v-switch>
+
+---
+
+# 把規則放到對的位置
+
+Type Driven Development 不是把所有規則都塞進型別，而是判斷每個規則應該在哪裡被保證。
+
+```ts
+type ApiPath = `api/${string}`;
+// static: 可以交給型別系統
+
+const user = UserSchema.parse(raw);
+// boundary: 外部資料進來時驗證
+
+await canAccess(currentUser, resource);
+// runtime: 依賴資料庫、時間、權限或外部系統
+```
+
+型別能保證的，就讓編譯器幫你守住；型別保證不了的，就把檢查集中在明確的邊界。
+
+---
+layout: image-right
+
+# the image source
+image: ./assets/fortress.png
+backgroundSize: cover
+---
+
+# 你的程式就像一座堡壘
+
+資料必須經過層層關卡才能真正進到某個區域（函數）內被運用
+
+程式就是一個透過小型函數慢慢拼湊組合而成的超大函數，每個函數都有一個明確的目的，型別則是這些函數的守衛，確保只有合法的資料能通過關卡進入函數內部被運用。
+
+
+程式最外層基本的防禦手段
+
+```mermaid
+flowchart LR
+  A[unknown data] --> B[Schema Validation]
+  B --> C[App]
+
+```
+
+
+---
+
+# 其他高階應用的型別
+
+高階型別不是為了炫技，而是把「已經成立的規則」留在型別裡，讓後續程式不能忘記。
+
+<v-switch>
+  <template #0> Brand Type：替驗證過的資料蓋章 </template>
+  <template #1> Conditional Type：型別層級的 if </template>
+  <template #2> 從 Route 推導 Params </template>
+</v-switch>
+
+````md magic-move {at: 1}
+```ts
+declare const brand: unique symbol;
+
+type Brand<T, Name extends string> = T & {
+  readonly [brand]: Name;
+};
+
+type UserId = Brand<string, "UserId">;
+type ProductId = Brand<string, "ProductId">;
+
+function parseUserId(raw: string): UserId | null {
+  return /^user_[a-z0-9]+$/.test(raw) ? (raw as UserId) : null;
+}
+
+function getUser(id: UserId) {}
+
+getUser("user_123");
+//      ^ string 還不是 UserId
+```
+
+```ts
+type ApiResponse<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: string };
+
+type SuccessData<T> =
+  T extends { ok: true; data: infer Data }
+    ? Data
+    : never;
+
+type UserResponse = ApiResponse<{
+  id: string;
+  name: string;
+}>;
+
+type User = SuccessData<UserResponse>;
+// { id: string; name: string }
+```
+
+```ts
+type ExtractRouteParams<Path extends string> =
+  Path extends `${string}:${infer Param}/${infer Rest}`
+    ? Param | ExtractRouteParams<Rest>
+    : Path extends `${string}:${infer Param}`
+      ? Param
+      : never;
+
+type RouteParams<Path extends string> = {
+  [Key in ExtractRouteParams<Path>]: string;
+};
+
+type Params = RouteParams<"/users/:userId/posts/:postId">;
+// { userId: string; postId: string }
+```
+````
+
+<v-switch at="1">
+  <template #0>
+    <span>資料在 boundary 被驗證後，Brand Type 讓它在型別系統中留下「可信身份」。</span>
+  </template>
+  <template #1>
+    <span>Conditional Type 可以描述輸入型別與輸出型別的關係，常用來從既有型別抽出資訊。</span>
+  </template>
+  <template #2>
+    <span>高階型別最有價值的地方，是讓 API 從單一來源自動推導，減少手動同步造成的不一致。</span>
+  </template>
+</v-switch>
