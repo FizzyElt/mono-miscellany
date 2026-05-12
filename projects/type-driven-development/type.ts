@@ -4,7 +4,7 @@ type Resp<T, E> =
   | {
       statusCode: 200;
       status: 'success';
-      content: T;
+      data: T;
     }
   | {
       statusCode: number;

@@ -88,6 +88,12 @@ importers:
         specifier: ^19.1.7
         version: 19.1.7(@types/react@19.1.9)
 
+  projects/type-driven-development:
+    dependencies:
+      '@slidev/theme-default':
+        specifier: ^0.25.0
+        version: 0.25.0
+
 packages:
 
   '@antfu/install-pkg@1.1.0':
