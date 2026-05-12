@@ -18,8 +18,8 @@
         "@slidev/cli": "^52.14.1",
         "@slidev/theme-seriph": "^0.25.0",
         "@vitejs/plugin-react": "^5.2.0",
-        "oxfmt": "^0.42.0",
-        "oxlint": "^1.57.0",
+        "oxfmt": "^0.49.0",
+        "oxlint": "^1.63.0",
         "typescript": "^5.9.3",
         "vite": "^7.3.1"
     },

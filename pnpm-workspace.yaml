@@ -5,3 +5,6 @@ onlyBuiltDependencies:
   - esbuild
 
 haredWorkspaceLockfile: false
+
+allowBuilds:
+  esbuild: true
