@@ -39,12 +39,33 @@ importers:
       '@slidev/theme-default':
         specifier: ^0.25.0
         version: 0.25.0
+    devDependencies:
+      '@slidev/cli':
+        specifier: ^52.14.1
+        version: 52.14.1(@nuxt/kit@3.21.2)(@types/markdown-it@14.1.2)(@types/node@22.19.15)(@vue/compiler-sfc@3.5.30)(markdown-it@14.1.1)(postcss@8.5.8)(react@19.1.1)
+      '@slidev/theme-seriph':
+        specifier: ^0.25.0
+        version: 0.25.0
 
-  projects/effect-guild: {}
+  projects/effect-guild:
+    devDependencies:
+      '@slidev/cli':
+        specifier: ^52.14.1
+        version: 52.14.1(@nuxt/kit@3.21.2)(@types/markdown-it@14.1.2)(@types/node@22.19.15)(@vue/compiler-sfc@3.5.30)(markdown-it@14.1.1)(postcss@8.5.8)(react@19.1.1)
+      '@slidev/theme-seriph':
+        specifier: ^0.25.0
+        version: 0.25.0
 
   projects/micro-frontend:
     dependencies:
       '@slidev/theme-default':
+        specifier: ^0.25.0
+        version: 0.25.0
+    devDependencies:
+      '@slidev/cli':
+        specifier: ^52.14.1
+        version: 52.14.1(@nuxt/kit@3.21.2)(@types/markdown-it@14.1.2)(@types/node@22.19.15)(@vue/compiler-sfc@3.5.30)(markdown-it@14.1.1)(postcss@8.5.8)(react@19.1.1)
+      '@slidev/theme-seriph':
         specifier: ^0.25.0
         version: 0.25.0
 
@@ -91,6 +112,13 @@ importers:
   projects/type-driven-development:
     dependencies:
       '@slidev/theme-default':
+        specifier: ^0.25.0
+        version: 0.25.0
+    devDependencies:
+      '@slidev/cli':
+        specifier: ^52.14.1
+        version: 52.14.1(@nuxt/kit@3.21.2)(@types/markdown-it@14.1.2)(@types/node@22.19.15)(@vue/compiler-sfc@3.5.30)(markdown-it@14.1.1)(postcss@8.5.8)(react@19.1.1)
+      '@slidev/theme-seriph':
         specifier: ^0.25.0
         version: 0.25.0
 

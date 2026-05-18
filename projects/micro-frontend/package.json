@@ -11,6 +11,10 @@
         "build:slides": "slidev build ./slides.md --base /micro-frontend/ --out ../../dist/slides/micro-frontend && if [ -d assets ]; then mkdir -p ../../dist/slides/micro-frontend/assets && cp -R assets/. ../../dist/slides/micro-frontend/assets; fi",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
+    "devDependencies": {
+        "@slidev/cli": "^52.14.1",
+        "@slidev/theme-seriph": "^0.25.0"
+    },
     "dependencies": {
         "@slidev/theme-default": "^0.25.0"
     }
