@@ -8,8 +8,12 @@
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "slides:clean": "rm -rf dist/slides",
+        "slides:build": "pnpm run slides:clean && mkdir -p dist/slides && pnpm --filter ai-knowledge-breakthrough run build:slides && pnpm --filter micro-frontend run build:slides && pnpm --filter type-driven-development run build:slides && pnpm --filter effect-guild run build:slides && cp slides-index.html dist/slides/index.html",
         "slide:ai-knowledge-breakthrough": "pnpm --filter ai-knowledge-breakthrough run dev",
-        "slide:micro-frontend": "pnpm --filter micro-frontend run dev"
+        "slide:micro-frontend": "pnpm --filter micro-frontend run dev",
+        "slide:type-driven-development": "pnpm --filter type-driven-development run dev",
+        "slide:effect-guild": "pnpm --filter effect-guild run dev"
     },
     "dependencies": {
         "effect": "^3.21.0"

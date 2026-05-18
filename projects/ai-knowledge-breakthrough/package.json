@@ -8,6 +8,7 @@
     "type": "module",
     "scripts": {
         "dev": "slidev ./slides.md",
+        "build:slides": "slidev build ./slides.md --base /ai-knowledge-breakthrough/ --out ../../dist/slides/ai-knowledge-breakthrough && if [ -d assets ]; then mkdir -p ../../dist/slides/ai-knowledge-breakthrough/assets && cp -R assets/. ../../dist/slides/ai-knowledge-breakthrough/assets; fi",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {

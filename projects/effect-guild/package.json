@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "slidev ./slides.md",
+    "build:slides": "slidev build ./slides.md --base /effect-guild/ --out ../../dist/slides/effect-guild && if [ -d assets ]; then mkdir -p ../../dist/slides/effect-guild/assets && cp -R assets/. ../../dist/slides/effect-guild/assets; fi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

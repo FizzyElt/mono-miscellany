@@ -38,7 +38,7 @@ Monolith -> Modular Monolith -> Monorepo
 
 ---
 layout: image-right
-image: /assets/monolith.png
+image: ./assets/monolith.png
 backgroundSize: contain
 ---
 
@@ -51,7 +51,7 @@ backgroundSize: contain
 
 ---
 layout: image-right
-image: /assets/modular-monolith.png
+image: ./assets/modular-monolith.png
 backgroundSize: contain
 ---
 
@@ -64,7 +64,7 @@ backgroundSize: contain
 
 ---
 layout: image-right
-image: /assets/monorepo.png
+image: ./assets/monorepo.png
 backgroundSize: contain
 ---
 
@@ -156,7 +156,7 @@ flowchart TB
 ---
 layout: image-right
 
-image: /assets/buildtime-integration.png
+image: ./assets/buildtime-integration.png
 backgroundSize: contain
 
 ---
@@ -175,7 +175,7 @@ backgroundSize: contain
 ---
 layout: image-right
 
-image: /assets/runtime-integration.png
+image: ./assets/runtime-integration.png
 backgroundSize: contain
 
 ---
@@ -355,7 +355,7 @@ layout: center
 
 ---
 layout: image
-image: /assets/react-svelte.png
+image: ./assets/react-svelte.png
 backgroundSize: 500px
 ---
 
@@ -407,7 +407,7 @@ export default defineConfig({
 
 ---
 layout: image-right
-image: /assets/react-svelte-render-tree.png
+image: ./assets/react-svelte-render-tree.png
 backgroundSize: 80%
 ---
 
@@ -585,7 +585,7 @@ layout: center
 
 ---
 layout: image
-image: /assets/react-svelte-meme.png
+image: ./assets/react-svelte-meme.png
 backgroundSize: 50%
 ---
 
@@ -596,7 +596,7 @@ layout: cover
 ## 把 Solid 也縫上去 
 
 <p align="center">
-  <img src="/assets/react-solid.png">
+  <img src="./assets/react-solid.png">
 </p>
 
 ---

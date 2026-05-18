@@ -8,6 +8,7 @@
     "type": "module",
     "scripts": {
         "dev": "slidev ./slides.md",
+        "build:slides": "slidev build ./slides.md --base /type-driven-development/ --out ../../dist/slides/type-driven-development && if [ -d assets ]; then mkdir -p ../../dist/slides/type-driven-development/assets && cp -R assets/. ../../dist/slides/type-driven-development/assets; fi",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
