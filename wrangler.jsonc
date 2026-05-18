@@ -1,8 +1,8 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "mono-miscellany-slides",
-  "compatibility_date": "2026-05-19",
-  "assets": {
-    "directory": "./dist/slides"
-  }
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "name": "slides",
+    "compatibility_date": "2026-05-19",
+    "assets": {
+        "directory": "./dist/slides",
+    },
 }
