@@ -9,7 +9,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "slides:clean": "rm -rf dist/slides",
-        "slides:build": "pnpm run slides:clean && mkdir -p dist/slides && pnpm --filter ai-knowledge-breakthrough run build:slides && pnpm --filter micro-frontend run build:slides && pnpm --filter type-driven-development run build:slides",
+        "slides:redirects": "printf '%s\\n' '/ai-knowledge-breakthrough/* /ai-knowledge-breakthrough/index.html 200' '/effect-guild/* /effect-guild/index.html 200' '/micro-frontend/* /micro-frontend/index.html 200' '/type-driven-development/* /type-driven-development/index.html 200' > dist/slides/_redirects",
+        "slides:build": "pnpm run slides:clean && mkdir -p dist/slides && pnpm --filter ai-knowledge-breakthrough run build:slides && pnpm --filter micro-frontend run build:slides && pnpm --filter type-driven-development run build:slides && pnpm run slides:redirects",
         "slide:ai-knowledge-breakthrough": "pnpm --filter ai-knowledge-breakthrough run dev",
         "slide:micro-frontend": "pnpm --filter micro-frontend run dev",
         "slide:type-driven-development": "pnpm --filter type-driven-development run dev",
@@ -25,7 +26,8 @@
         "oxfmt": "^0.49.0",
         "oxlint": "^1.63.0",
         "typescript": "^5.9.3",
-        "vite": "^7.3.1"
+        "vite": "^7.3.1",
+        "wrangler": "^4.92.0"
     },
     "packageManager": "pnpm@11.1.0"
 }
