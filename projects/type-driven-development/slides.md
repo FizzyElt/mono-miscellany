@@ -52,7 +52,7 @@ layout: center
 <v-switch>
 <template #1>
 
-### 原始資料
+#### 原始資料
 
 - `number`
 - `string`
@@ -67,7 +67,7 @@ layout: center
 
 <template #2>
 
-### 有限集合
+#### 有限集合
 
 ```ts
 type Color = 'red' | 'green' | 'blue';
@@ -82,7 +82,7 @@ type Currency = 'USD' | 'EUR' | 'JPY' | 'GBP';
 
 <template #3>
 
-### 格式約束
+#### 格式約束
 
 ```ts
 type Px = `${number}px`;
@@ -96,7 +96,7 @@ type RgbColor = `rgb(${number}, ${number}, ${number})`;
 
 <template #4>
 
-### 結構
+#### 結構
 
 ```ts
 interface User {
@@ -113,7 +113,7 @@ type Rgb = [number, number, number]
 
 <template #5>
 
-### 分支(discriminated union)
+#### 分支(discriminated union)
 
 ```ts
 type Result<T, E> =
@@ -130,7 +130,7 @@ type Shape =
 
 <template #6>
 
-### 可依賴實際值的型別
+#### 可依賴實際值的型別
 
 ```lean
 -- example.lean
@@ -140,10 +140,16 @@ inductive Vect (α : Type u) : Nat → Type u where
    | cons : α → Vect α n → Vect α (n + 1)
 
 def zero: Vect Nat 0 := Vect.nil
+--        ----------    --------
+--           type        value
 
 def one: Vect Nat 1 := Vect.cons 0 zero
+--       ----------    ----------------
+--          type              value
 
 def two: Vect Nat 2 := Vect.cons 0 one
+--       ----------    ---------------
+--          type             value
 ```
 
 型別系統會算數！
