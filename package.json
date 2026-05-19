@@ -8,23 +8,16 @@
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "slides:clean": "rm -rf dist && mkdir -p dist",
-        "slides:index": "cp slides-index.html dist/index.html",
-        "slides:redirects": "printf '%s\\n' '/ai-knowledge-breakthrough/* /ai-knowledge-breakthrough/index.html 200' '/effect-guild/* /effect-guild/index.html 200' '/micro-frontend/* /micro-frontend/index.html 200' '/type-driven-development/* /type-driven-development/index.html 200' > dist/slides/_redirects",
-        "slides:build": "pnpm run slides:clean && pnpm run slide:ai-knowledge-breakthrough:build && pnpm run slide:type-driven-development:build && pnpm run slides:index",
-        "slide:ai-knowledge-breakthrough:build": "cd projects/ai-knowledge-breakthrough && slidev build ./slides.md --out ../../dist/ai-knowledge-breakthrough --base /ai-knowledge-breakthrough/ --download=false && mkdir -p ../../dist/ai-knowledge-breakthrough/assets && cp -R assets/. ../../dist/ai-knowledge-breakthrough/assets/",
-        "slide:type-driven-development:build": "cd projects/type-driven-development && slidev build ./slides.md --out ../../dist/type-driven-development --base /type-driven-development/ --download=false && mkdir -p ../../dist/type-driven-development/assets && cp -R assets/. ../../dist/type-driven-development/assets/",
-        "slide:ai-knowledge-breakthrough": "pnpm --filter ai-knowledge-breakthrough run dev",
-        "slide:micro-frontend": "pnpm --filter micro-frontend run dev",
-        "slide:type-driven-development": "pnpm --filter type-driven-development run dev",
-        "slide:effect-guild": "pnpm --filter effect-guild run dev"
+        "slides:build": "pnpm --filter slides run build",
+        "slide:ai-knowledge-breakthrough": "pnpm --filter slides run dev:ai-knowledge-breakthrough",
+        "slide:micro-frontend": "pnpm --filter slides run dev:micro-frontend",
+        "slide:type-driven-development": "pnpm --filter slides run dev:type-driven-development",
+        "slide:effect-guild": "pnpm --filter slides run dev:effect-guild"
     },
     "dependencies": {
         "effect": "^3.21.0"
     },
     "devDependencies": {
-        "@slidev/cli": "^52.14.1",
-        "@slidev/theme-seriph": "^0.25.0",
         "@vitejs/plugin-react": "^5.2.0",
         "oxfmt": "^0.49.0",
         "oxlint": "^1.63.0",

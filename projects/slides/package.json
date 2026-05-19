@@ -1,0 +1,21 @@
+{
+  "name": "slides",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf ../../dist && mkdir -p ../../dist",
+    "index": "cp index.html ../../dist/index.html",
+    "build": "pnpm run clean && slidev build ai-knowledge-breakthrough/ai-knowledge-breakthrough.md micro-frontend/micro-frontend.md type-driven-development/type-driven-development.md --out $PWD/../../dist --base ./ --download=false && pnpm run index",
+    "dev": "pnpm run dev:ai-knowledge-breakthrough",
+    "dev:ai-knowledge-breakthrough": "slidev ai-knowledge-breakthrough/ai-knowledge-breakthrough.md",
+    "dev:effect-guild": "slidev effect-guild/effect-guild.md",
+    "dev:micro-frontend": "slidev micro-frontend/micro-frontend.md",
+    "dev:type-driven-development": "slidev type-driven-development/type-driven-development.md",
+    "preview": "vite preview ../../dist"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.14.1",
+    "@slidev/theme-seriph": "^0.25.0"
+  }
+}
