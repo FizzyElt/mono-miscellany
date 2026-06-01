@@ -56,12 +56,12 @@ TDD
 layout: center
 ---
 
-# 型別系統
-什麼！靜態型別語言也有分類？
+# 型別系統的表達力
+同樣是靜態型別，能表達與保證的事情其實差很多
 
-1. 一般靜態型別：Java, C#, Go, TypeScript
-2. 表達力較強的型別系統：Haskell, Rust, Scala
-3. 依值型別系統：Idris, Agda, Rocq, Lean
+1. 常見的靜態型別：Java, C#, Go, TypeScript
+2. 表達力較強的型別：Haskell, Rust, Scala
+3. Dependent Type（依值型別）系統：Idris, Agda, Rocq, Lean
 
 ---
 
@@ -533,15 +533,21 @@ type Params = RouteParams<"/users/:userId/posts/:postId">;
 </v-switch>
 
 ---
+layout: center
+---
 
 # Type-Driven 是個好執行的寫程式策略
 
-在既有的環境改變你的執行策略相對更容易
+在既有的環境中，改變寫程式的思考方式，通常比推動新的流程更容易
 
 1. 型別就在程式碼旁邊，你沒辦法忽視它
-2. 在每個小地方多挑剔一點，讓你有更多思考
+2. 可以從一小部分開始，逐步擴大
 3. 型別的定義會直接呼應你的程式架構
+4. 你會先思考資料與狀態，再思考實作細節
+5. 更改時可以依循型別錯誤提示做更改
+6. 即便是 AI 輔助，你依然也參與整個實作過程
 
+我們不需要靠意志力遵守規則，而是把規則留在程式裡
 
 ---
 layout: center
