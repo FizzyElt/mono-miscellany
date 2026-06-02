@@ -68,7 +68,7 @@ title: 利用 AI 輔助學習
 layout: image-right
 
 # the image source
-image: ./assets/totp.png
+image: /assets/ai-knowledge-breakthrough/totp.png
 backgroundSize: contain
 ---
 
@@ -136,7 +136,7 @@ layout: center
 
 ---
 layout: image-right
-image: ./assets/chart.png
+image: /assets/ai-knowledge-breakthrough/chart.png
 backgroundSize: contain
 ---
 

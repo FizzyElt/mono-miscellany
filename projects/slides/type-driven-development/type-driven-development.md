@@ -430,7 +430,7 @@ await canAccess(currentUser, resource);
 layout: image-right
 
 # the image source
-image: ./assets/fortress.png
+image: /assets/type-driven-development/fortress.png
 backgroundSize: cover
 ---
 
