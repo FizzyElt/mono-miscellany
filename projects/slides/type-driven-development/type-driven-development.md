@@ -8,15 +8,31 @@ title: Type-Driven Development
 
 撰寫一個合適的型別所產生的效益遠比想像的多
 
-
 ---
-layout: center
+layout: intro
 ---
 
-# 什麼是 Type-Driven Development？
-出自於 Type-Driven Development with Idris 這本書，但我其實沒看 🤪
+# 契機
 
-Type-Driven Development 是一種以型別為中心的開發方法，強調在撰寫程式碼之前先定義好資料結構和型別，並利用這些型別來指導程式碼的撰寫和設計。
+我很懶，但我也想減少在撰寫程式上犯錯的機會
+
+<v-click>
+
+記憶、文件、規範、測試、Code Review？
+
+</v-click>
+
+<v-click>
+
+但本質的問題是這些東西並非與程式具有強綁定關係，需花更多的力氣去維持習慣
+
+</v-click>
+
+<v-click>
+
+有沒有一種方法是花最少的心智成本獲得最大效益，最好是能直接融入日常開發中
+
+</v-click>
 
 ---
 
@@ -38,6 +54,22 @@ TDD
 2. 沒辦法確定測試項目到底該到什麼程度(如果一個函數有 100 種可能性，你要把 100 種全測完？)
 3. 因為程式耦合過重導致測試難度飆升，變成測試你寫不出來，僥倖寫出來了沒人看得懂
 4. AI 能幫你產，但你依然要有能力驗證測試項目是否合理
+
+---
+layout: center
+---
+
+# 什麼是 Type-Driven Development？
+
+出自於 Type-Driven Development with Idris 這本書，但我其實沒看 🤪
+
+Type-Driven Development 是一種以型別為中心的開發方法，強調在撰寫程式碼之前先定義好資料結構和型別，並利用這些型別來指導程式碼的撰寫和設計。
+
+<v-click>
+
+問題：在日常開發中，型別對你而言是什麼？
+
+</v-click>
 
 ---
 
