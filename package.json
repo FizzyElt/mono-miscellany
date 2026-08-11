@@ -15,15 +15,15 @@
         "slide:effect-guild": "pnpm --filter slides run dev:effect-guild"
     },
     "dependencies": {
-        "effect": "^3.21.0"
+        "effect": "^3.22.1"
     },
     "devDependencies": {
-        "@vitejs/plugin-react": "^6.0.2",
+        "@vitejs/plugin-react": "^6.0.5",
         "oxfmt": "^0.52.0",
-        "oxlint": "^1.67.0",
+        "oxlint": "^1.78.0",
         "typescript": "^6.0.3",
-        "vite": "^8.0.14",
-        "wrangler": "^4.92.0"
+        "vite": "^8.2.1",
+        "wrangler": "^4.120.0"
     },
     "packageManager": "pnpm@11.5.1"
 }

@@ -16,7 +16,7 @@
     "preview": "vite preview --outDir ../../dist"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.14.1",
+    "@slidev/cli": "^52.19.0",
     "@slidev/theme-seriph": "^0.25.0"
   }
 }
