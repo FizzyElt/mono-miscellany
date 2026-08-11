@@ -596,7 +596,7 @@ layout: cover
 ## 把 Solid 也縫上去 
 
 <p align="center">
-  <img :src="'/assets/micro-frontend/react-solid.png'">
+  <img src="../assets/micro-frontend/react-solid.png">
 </p>
 
 ---
