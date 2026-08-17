@@ -13,6 +13,7 @@
         "dev:effect-guild": "slidev effect-guild/effect-guild.md",
         "dev:micro-frontend": "slidev micro-frontend/micro-frontend.md",
         "dev:type-driven-development": "slidev type-driven-development/type-driven-development.md",
+        "dev:terminal-survival-guide": "slidev terminal-survival-guide/terminal-survival-guide.md",
         "preview": "vite preview --outDir ../../dist"
     },
     "devDependencies": {
