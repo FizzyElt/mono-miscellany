@@ -7,7 +7,7 @@
         "clean": "rm -rf ../../dist && mkdir -p ../../dist",
         "index": "cp index.html ../../dist/index.html",
         "copy-assets": "for deck in ai-knowledge-breakthrough micro-frontend type-driven-development; do mkdir -p ../../dist/$deck/assets && cp -R assets/$deck ../../dist/$deck/assets/; done",
-        "build": "pnpm run clean && slidev build ai-knowledge-breakthrough/ai-knowledge-breakthrough.md micro-frontend/micro-frontend.md type-driven-development/type-driven-development.md --out $PWD/../../dist --base ./ --router-mode hash --download=false && pnpm run copy-assets && pnpm run index",
+        "build": "pnpm run clean && slidev build ai-knowledge-breakthrough/ai-knowledge-breakthrough.md micro-frontend/micro-frontend.md type-driven-development/type-driven-development.md terminal-survival-guide/terminal-survival-guide.md --out $PWD/../../dist --base ./ --router-mode hash --download=false && pnpm run copy-assets && pnpm run index",
         "dev": "pnpm run dev:ai-knowledge-breakthrough",
         "dev:ai-knowledge-breakthrough": "slidev ai-knowledge-breakthrough/ai-knowledge-breakthrough.md",
         "dev:effect-guild": "slidev effect-guild/effect-guild.md",
