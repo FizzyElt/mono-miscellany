@@ -9,6 +9,8 @@ title: 學會在終端機裡生存
 成為專家之前，你要先活下去
 
 ---
+layout: center
+---
 
 # 目錄
 
@@ -18,6 +20,13 @@ title: 學會在終端機裡生存
 - 現代 CLI 工具與替代品
 - 指令查詢與學習技巧
 - TUI 與學習 CLI 的價值
+
+<div class="mt-8">
+
+> 提醒：本次內容 Windows 系統幾乎不適用 🙃
+
+</div>
+
 
 ---
 layout: image-right
@@ -31,6 +40,7 @@ backgroundSize: contain
 - 系統自帶的
 - iTerm2 (Mac)
 - Ghostty
+- Kitty
 - **WezTerm**
 - Alacritty
 - Warp
@@ -71,7 +81,6 @@ layout: two-cols-header
 
 - `ls`：列出目錄內容
 - `cd`：切換目錄
-- `mkdir`：建立新目錄
 - `which`：查找指令的路徑
 - `cat` 🐱：顯示檔案內容
 - `exit`：退出終端機
@@ -85,15 +94,15 @@ layout: two-cols-header
 
 - `echo`：輸出文字到終端機
 - `clear`：清除終端機畫面
+- `mkdir`：建立新目錄
+- `touch`：建立新檔案
 - `rm`：刪除檔案或目錄
 - `cp`：複製檔案或目錄
 - `mv`：移動檔案或目錄
-- `touch`：建立新檔案
 
 ---
 layout: intro
 ---
-
 
 # 裝飾一下你的終端機
 
