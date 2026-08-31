@@ -6,7 +6,7 @@ title: 學會在終端機裡生存
 
 # 學會在終端機裡生存
 
-成為專家之前，你要先活下去
+成為專家之前，你要先學會生存
 
 ---
 layout: center
@@ -112,6 +112,13 @@ layout: intro
 - 看得出專案的狀態
 - 打錯指令前就發現
 - 少打一點重複的內容
+
+<div class="mt-8">
+
+> 接下來想跟著做需先安裝 [Homebrew](https://brew.sh/)
+
+</div>
+
 
 ---
 layout: image
