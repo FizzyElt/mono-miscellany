@@ -38,12 +38,12 @@ backgroundSize: contain
 # 終端機的選用
 
 - 系統自帶的
-- iTerm2 (Mac)
-- Ghostty
-- Kitty
-- **WezTerm**
-- Alacritty
-- Warp
+- [iTerm2](https://iterm2.com/) (Mac)
+- [Ghostty](https://ghostty.org/)
+- [Kitty](https://sw.kovidgoyal.net/kitty/)
+- [**WezTerm**](https://wezterm.org/)
+- [Alacritty](https://alacritty.org/)
+- [Warp](https://www.warp.dev/terminal)
 - ...
 
 ---
@@ -115,7 +115,7 @@ layout: intro
 
 <div class="mt-8">
 
-> 接下來想跟著做需先安裝 [Homebrew](https://brew.sh/)
+> 接下來如果你想跟著做需要先安裝 [Homebrew](https://brew.sh/)
 
 </div>
 
@@ -158,12 +158,12 @@ backgroundSize: contain
 
 # Prompt 的裝飾
 
-|      | Starship             | Powerlevel10k                 |
-| ---- | -------------------- | ----------------------------- |
-| 定位 | 跨 Shell 的 Prompt   | Zsh 專用 Theme（主題）        |
-| 設定 | `starship.toml`      | `p10k configure`、`.p10k.zsh` |
-| 特色 | 跨平台、設定格式統一 | 設定精細、內建互動式精靈      |
-| 適合 | 可能切換不同 Shell   | 確定長期使用 Zsh              |
+|      | [Starship](https://starship.rs/) | [Powerlevel10k](https://github.com/romkatv/powerlevel10k) |
+| ---- | -------------------------------- | --------------------------------------------------------- |
+| 定位 | 跨 Shell 的 Prompt               | Zsh 專用 Theme（主題）                                    |
+| 設定 | `starship.toml`                  | `p10k configure`、`.p10k.zsh`                             |
+| 特色 | 跨平台、設定格式統一             | 設定精細、內建互動式精靈                                  |
+| 適合 | 可能切換不同 Shell               | 確定長期使用 Zsh                                          |
 
 <div class="mt-8">
 
@@ -179,7 +179,7 @@ layout: two-cols-header
 
 ::left::
 
-### Oh My Zsh
+### [Oh My Zsh](https://ohmyz.sh/)
 
 幫你準備好一套 Zsh 環境：
 
@@ -190,7 +190,7 @@ layout: two-cols-header
 
 ::right::
 
-### Zinit
+### [Zinit](https://github.com/zdharma-continuum/zinit)
 
 專注在載入與管理 Plugins：
 
@@ -227,9 +227,15 @@ layout: center
 
 有些 CLI 太陽春，我需要更潮的
 
-- `cat` : `bat` 🦇
-- `ls` : `eza`, `lsd`
-- `top` : `btop`, `htop`
+- `cat` → [`bat`](https://github.com/sharkdp/bat) 🦇
+- `ls` → [`eza`](https://github.com/eza-community/eza), [`lsd`](https://github.com/lsd-rs/lsd)
+- `top` → [`btop`](https://github.com/aristocratos/btop), [`htop`](https://github.com/htop-dev/htop)
+- `find` → [`fd`](https://github.com/sharkdp/fd)
+- `grep` → [`ripgrep`](https://github.com/BurntSushi/ripgrep) (`rg`)
+- `du` → [`dust`](https://github.com/bootandy/dust)
+- `df` → [`duf`](https://github.com/muesli/duf)
+- `ps` → [`procs`](https://github.com/dalance/procs)
+- `cd` → [`zoxide`](https://github.com/ajeetdsouza/zoxide)
 
 ---
 layout: center
@@ -244,7 +250,7 @@ CLI 工具只會更多，你一定記不完所有指令，學會查指令與 CLI
 - `--help` 幾乎所有 CLI 都有這個參數，會列出指令的使用方式與可用參數。
 - `man` 會列出指令的使用說明，通常比 `--help` 更詳細。
 - 熟悉 CLI 設計的通用準則，可以更快進入狀況([甚至有人寫成一本書？](https://clig.dev))
-- 查詢官方文件，通常會有更完整的使用說明與範例。
+- 查詢官方文件，如果有的話 😏。
 
 ---
 layout: center
