@@ -14,10 +14,11 @@
         "dev:micro-frontend": "slidev micro-frontend/micro-frontend.md",
         "dev:type-driven-development": "slidev type-driven-development/type-driven-development.md",
         "dev:terminal-survival-guide": "slidev terminal-survival-guide/terminal-survival-guide.md",
+        "dev:sshhole": "slidev sshhole/sshhole.md",
         "preview": "vite preview --outDir ../../dist"
     },
     "devDependencies": {
-        "@slidev/cli": "^52.19.0",
+        "@slidev/cli": "^53.1.0",
         "@slidev/theme-seriph": "^0.25.0"
     }
 }
