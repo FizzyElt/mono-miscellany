@@ -36,7 +36,6 @@ daemon:*:1:1::/usr/sbin:/bin/sh
 ::right::
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 20, "rankSpacing": 25}}}%%
 flowchart TB
   In[輸入密碼] --> Crypt["crypt(密碼, salt)"]
   Store["/etc/passwd 雜湊欄位<br/>（所有人可讀）"] --> Cmp
@@ -70,7 +69,6 @@ daemon:*:19700:0:99999:7:::
 ::right::
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 20, "rankSpacing": 25}}}%%
 flowchart TB
   In[輸入密碼] --> Crypt["crypt(密碼, salt)"]
   Store["/etc/shadow 雜湊欄位<br/>（僅 root 可讀）"] --> Cmp
@@ -78,7 +76,7 @@ flowchart TB
   Cmp -->|是| OK[登入成功]
   Cmp -->|否| NG[拒絕]
 
-  classDef changed fill:#fef3c7,stroke:#d97706
+  classDef changed fill:#116611
   class Store changed
 ```
 
@@ -105,7 +103,6 @@ DES 不夠用了，演算法開始變多
 ::right::
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 20, "rankSpacing": 25}}}%%
 flowchart TB
   In[輸入密碼] --> Crypt["crypt(密碼, salt)"]
   Crypt -->|成功| Hash[雜湊字串]
@@ -116,7 +113,7 @@ flowchart TB
   Cmp -->|是| OK[登入成功]
   Cmp -->|否| NG[拒絕]
 
-  classDef changed fill:#fef3c7,stroke:#d97706
+  classDef changed fill:#116611
   class Crypt,Fail changed
 ```
 
@@ -126,7 +123,7 @@ flowchart TB
 
 crypt 函數的演進
 
-- 1990 : `crypt()` 任何無法處理的內容，失敗回傳 `NULL`。但絕大多數程式中不值接檢查 `NULL`，而是直接把回傳值拿去比對字串，如果遇到 `NULL` 程式直接崩潰。
+- 1990 : `crypt()` 任何無法處理的內容，失敗回傳 `NULL`。但絕大多數程式中不直接檢查 `NULL`，而是直接把回傳值拿去比對字串，如果遇到 `NULL` 程式直接崩潰。
 
 <v-click>
 
@@ -143,7 +140,15 @@ crypt 函數的演進
 
 <v-click>
 
-- 2016 : CVE-2016-6210，對 sshd 查詢一個不存在的用戶會立即回傳否，所以可以利用回傳時間判斷有使用者有沒有存在，修復的方式是隨便選一個帳號的 salt 走個流程，但實際上還是沒解決，只是多浪費了點時間。
+- 2016 : CVE-2016-6210，對 sshd 查詢一個不存在的用戶會立即回傳否，所以可以利用回傳時間判斷有使用者有沒有存在，修復的方式是隨便選一個帳號的 salt 走個流程，透過模擬雜湊縮小回應時間差，防止帳號枚舉。
+
+</v-click>
+
+<v-click>
+
+> Timing equalization（回應時間均衡化）: 它是用來緩解 Timing side channel（時間側通道） 的手段。
+> 
+> Constant-time comparison（常數時間比對）是在比對兩段固定長度的資料時，即使發現不同，也會處理完所有位元組才回傳結果。這樣一來，比對耗時就不會因為第一個不同的位置而改變，避免洩漏前面有多少內容相符。常用於比對 HMAC（雜湊式訊息驗證碼）等敏感資料。
 
 </v-click>
 
@@ -169,4 +174,8 @@ crypt 函數的演進
 
 因為 musl 的 crypt() 會在雜湊失敗時回傳 `*`，而 alpine 也把 `*` 當作禁止密碼登入的標記，因此在特定情況下，OpenSSH 可能會誤判密碼驗證成功。
 
-最終，OpenSSH 判定帳號儲存的密碼欄位如果短到不可能是有效雜湊，例如只有一個 `*`，`sshd` 就會判定密碼驗證失敗。即使 musl 的 `crypt()` 也回傳 `*`，兩個字串相等也不會放行。
+<v-click>
+
+最終，OpenSSH 作法是判定帳號儲存的密碼欄位如果短到不可能是有效雜湊，例如只有一個 `*`，`sshd` 就會判定密碼驗證失敗。即使 musl 的 `crypt()` 也回傳 `*`，兩個字串相等也不會放行。
+
+</v-click>
